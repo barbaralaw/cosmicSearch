@@ -99,7 +99,7 @@ function writeTicket(value) {
   return `See if the ghoul is at a ${value} location.`
 }
 
-let diceRollResult = diceValues[getRandomIndex(0, diceValues.length)];
+//let diceRollResult = diceValues[getRandomIndex(0, diceValues.length)];
 
 
 
@@ -114,6 +114,7 @@ let diceRollResult = diceValues[getRandomIndex(0, diceValues.length)];
 function getRandomIndex(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
+  console.log(`getRandomIndex returns:`, (Math.floor(Math.random() * (max - min) + min)));
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
@@ -171,7 +172,7 @@ let allPlayers = [];
 let badGuy;
 let drawDeck;
 let currentPlayer;
-
+let curToken;
 
 
 /*###########################################
@@ -183,6 +184,7 @@ let currentPlayer;
 ###########################################*/
 
 function setBadGuy() {
+  console.log(`setting bad guy to: `);
   return mysteryCards[getRandomIndex(0, mysteryCards.length)];
 }
 
@@ -210,24 +212,35 @@ function startGame() {
 
 function selectToken() {
   let tokensToggled = 0;
+  let returnInfo = [];
   if (token1.classList.contains("selected")) {
-    chosenToken = token1;
+    chosenTokenNum = 1;
+    returnInfo.push(token1);
+    //chosenToken = `images/token1.jpg`;
     tokensToggled++;
   }
   if (token2.classList.contains("selected")) {
-    chosenToken = token2;
+    chosenTokenNum = 2;
+    curToken = token2;
+    //chosenToken = `images/token2.jpg`;
     tokensToggled++;
   }
   if (token3.classList.contains("selected")) {
-    chosenToken = token3;
+    chosenTokenNum = 3;
+    curToken = token3;
+    //chosenToken = `images/token3.jpg`;
     tokensToggled++;
   }
   if (token4.classList.contains("selected")) {
-    chosenToken = token4;
+    chosenTokenNum = 4;
+    curToken = token4;
+    //chosenToken = `images/token4.jpg`;
     tokensToggled++;
   }
   if (token5.classList.contains("selected")) {
-    chosenToken = token5;
+    chosenTokenNum = 5;
+    curToken = token5;
+    //chosenToken = `images/token5.jpg`;
     tokensToggled++;
   }
   if (tokensToggled === 0) {
@@ -241,16 +254,21 @@ function selectToken() {
     token4.style.display = "none";
     token5.style.display = "none";
     numOfPlayers++;
-    return chosenToken;
+    console.log(`chosenToken is: `, chosenTokenNum);
+    returnInfo.push(chosenTokenNum);
+    returnInfo.push(`images/token${chosenTokenNum}.jpg`);
+    return returnInfo;
+    //return [chosenTokenNum, `images/token${chosenTokenNum}.jpg`, curToken];
   }
 }
 
 function setStartLocation() {
-  return allLocations[getRandomIndex(0, allLocations.length)];
+  console.log(`setting start location to: `)
+  return getRandomIndex(0, allLocations.length);
 }
 
 function MakeCharacter(playerName, token, location, tickets, movesLeft, miniMap) {
-  // this.playerName = playerName
+  //this.playerName = playerName
   this.token = token
   this.location = location
   this.tickets = tickets
@@ -261,9 +279,12 @@ function MakeCharacter(playerName, token, location, tickets, movesLeft, miniMap)
 // Players choose tokens & starting points
 function savePlayer() {
   //playerSelection.style.display = "block";
-  allPlayers.push(new MakeCharacter(`player${numOfPlayers}`, selectToken(), setStartLocation(), 0, 0)) ;
-  allPlayers[allPlayers.length-1].token.classList.remove("selected");
-  allPlayers[allPlayers.length-1].token.classList.add("taken");
+  let tokenInfo = selectToken();
+  allPlayers.push(new MakeCharacter(`player${numOfPlayers+1}`, tokenInfo[1], setStartLocation(), 0, 0)) ;
+  allPlayers[allPlayers.length-1].tokenInfo[2].classList.remove("selected");
+  allPlayers[allPlayers.length-1].tokenInfo[2].classList.add("taken");
+  console.log(`allPlayers.playerName at index 0 is: `, allPlayers[0].playerName);
+  console.log(`allPlayers.token at index 0 is: `,allPlayers[0].token);
   if (allPlayers.length < 4) {
     document.getElementById("addNewPlayer").style.display = "block";
   }
@@ -287,7 +308,7 @@ function addNewPlayer() {
 #                                           #
 #######   THIRD THING THAT HAPPENS   ########
 #                                           #
-#  Players hit 'All Players Added' button   #
+#     Players hit 'Start Game' button       #
 #                                           #
 ###########################################*/
 function playersAdded() {
@@ -297,11 +318,27 @@ function playersAdded() {
     addPlayersMenu.style.display = "none";
     playerSelection.style.display = "none";
     helperButtons.style.display = "block";
+    for (let i=0; i<allPlayers.length; i++) {
+      // show that player's token in the starting location
+      let startingPlace = allPlayers[i].location;
+      console.log(`starting place is: `, startingPlace);
+      let mapToken = document.createElement("img");
+      let imageFileStr = `images/token`+ allPlayers[i].token + `.jpg`;
+      console.log(allPlayers[i].token)
+      console.log(`imageFileStr is: `, imageFileStr);
+      mapToken.setAttribute("src", imageFileStr);
+      // use anonymous function to fill in data?
+      mapToken.setAttribute("alt", `Player ${i+1} Token`)
+      document.querySelector(".toyShop").appendChild(mapToken);
+    }
     currentPlayer = allPlayers[0];
   }
 }
 
-console.table(badGuy);
+// add available class to locations where players can move
+
+
+/*console.table(badGuy);
 console.table(diceRollResult);
 console.table(ticketValues);
-console.table(drawDeck);
+console.table(drawDeck);*/
