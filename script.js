@@ -98,14 +98,9 @@ const allLocations = [
   [22, 23]          // pinballHall
 ];
 
-
 function writeTicket(value) {
   return `See if the ghoul is at a ${value} location.`
 }
-
-//let diceRollResult = diceValues[getRandomIndex(0, diceValues.length)];
-
-
 
 
 
@@ -119,7 +114,6 @@ function getRandomIndex(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   let randomIndex = Math.floor(Math.random() * (max - min) + min);
-  console.log(`getRandomIndex returns:`, randomIndex);
   return randomIndex; //The maximum is exclusive and the minimum is inclusive
 }
 
@@ -145,6 +139,7 @@ function toggle(item) {
 }
 
 
+
 /*###########################################
 #                                           #
 ##   INITIAL VARIABLES & EVENT LISTENERS   ##
@@ -162,7 +157,12 @@ let tokenList = [];
 const playerSelection = document.getElementById("playerSelection");
 const addPlayersMenu = document.getElementById('addPlayersMenu');
 const helperButtons = document.getElementById('helperButtons');
+const gameControls = document.getElementById('gameControls');
+const turnControls = document.getElementById('turnControls');
+const rollDiceButton = document.getElementById('rollDice');
 const startButton = document.getElementById('startButton');
+const curPlay = document.getElementById('curPlay');
+const roll = document.getElementById('roll');
 tokenList[0] = document.querySelector(".token1");  //token 1
 tokenList[1] = document.querySelector(".token2");  //token 2
 tokenList[2] = document.querySelector(".token3");  //token 3
@@ -173,7 +173,7 @@ document.getElementById("startButton").addEventListener('click', startGame);
 document.getElementById("addNewPlayer").addEventListener('click', addNewPlayer);
 document.getElementById("savePlayer").addEventListener('click', savePlayer);
 document.getElementById("playersAdded").addEventListener('click', playersAdded);
-//document.getElementById("selectToken").addEventListener('click', selectToken);
+document.getElementById("rollDice").addEventListener('click', beginTurn);
 document.querySelector(".token1").addEventListener('click', function() {toggle(tokenList[0])});
 document.querySelector(".token2").addEventListener('click', function() {toggle(tokenList[1])});
 document.querySelector(".token3").addEventListener('click', function() {toggle(tokenList[2])});
@@ -191,7 +191,6 @@ document.querySelector(".token5").addEventListener('click', function() {toggle(t
 ###########################################*/
 
 function setBadGuy() {
-  console.log(`setting bad guy to: `);
   return mysteryCards[getRandomIndex(0, mysteryCards.length)];
 }
 
@@ -255,7 +254,6 @@ function selectToken() {
 }
 
 function setStartLocation() {
-  console.log(`setting start location to: `)
   return getRandomIndex(0, allLocations.length);
 }
 
@@ -271,8 +269,7 @@ function MakeCharacter(playerName, token, location, tickets, movesLeft) {  //min
 // Players choose tokens & starting points
 function savePlayer() {
   let tokenInfo = selectToken();
-  console.log(`Number of players is: ${numOfPlayers}`);
-  allPlayers.push(new MakeCharacter(`player${numOfPlayers}`, tokenInfo[1], setStartLocation(), 0, 0)) ;
+  allPlayers.push(new MakeCharacter(`player${numOfPlayers}`, tokenInfo[1], setStartLocation(), [], 0)) ;
   if (allPlayers.length < 4) {
     document.getElementById("addNewPlayer").style.display = "block";
   }
@@ -292,6 +289,7 @@ function addNewPlayer() {
 }
 
 
+
 /*###########################################
 #                                           #
 #######   THIRD THING THAT HAPPENS   ########
@@ -299,6 +297,7 @@ function addNewPlayer() {
 #     Players hit 'Start Game' button       #
 #                                           #
 ###########################################*/
+
 function playersAdded() {
   if (allPlayers.length < 2) {
     alert('You need at least 2 players')
@@ -306,6 +305,8 @@ function playersAdded() {
     addPlayersMenu.style.display = "none";
     playerSelection.style.display = "none";
     helperButtons.style.display = "block";
+    gameControls.style.display = "block";
+    turnControls.style.display = "none";
     for (let i=0; i<allPlayers.length; i++) {
       let startingPlace = allPlayers[i].location;
       let mapToken = document.createElement("img");
@@ -315,11 +316,106 @@ function playersAdded() {
       document.querySelector(`.loc${allPlayers[i].location}`).appendChild(mapToken);
     }
     currentPlayer = allPlayers[0];
+    curPlay.innerText = `It is player 1's turn`;
   }
 }
 
+
+
+/*###########################################
+#                                           #
+#######   FOURTH THING THAT HAPPENS  ########
+#                                           #
+#             Players be Playin'            #
+#                                           #
+###########################################*/
+
 // add available class to locations where players can move
 
+function rollDice() {
+  return diceValues[getRandomIndex(0, diceValues.length)];
+}
+
+function beginTurn() {
+  let diceRollResult = rollDice();
+  roll.innerText = `Rolled ${diceRollResult[0]} moves & ${diceRollResult[1]} tickets.}`;
+  let movesLeft = diceRollResult[0];
+  for (let i=0; i<diceRollResult[1]; i++) {
+    currentPlayer.tickets.push(drawDeck.shift());
+    console.log(currentPlayer.tickets);
+  }
+  //Available moves appear on board
+  let neighbors = allLocations[currentPlayer.location];
+  console.log(neighbors);
+  for (let j=0; j<neighbors.length; j++) {
+    document.querySelector(`.loc${neighbors[j]}`).classList.add("available");
+  }
+  turnControls.style.display = "block";
+}
+
+function makeAMove() {
+  // called when user clicks on a location
+
+  // check that location has class available
+  // if so, move the token to that location
+  // lower move count by 1
+  // shift available moves => turn that into a function that is called here and in beginTurn
+  // if movesLeft === 0, remove available from all locations
+}
+
+function miniMap() {
+  // called when user clicks on view/edit minimap
+
+  // warning screen appears - hit ok to view OR 3 seconds?
+  // when user clicks on an element in minimap (how to distinguish minimap from regular?)
+  // options to add X or something good appears
+  // whichever they click on is toggled on that location
+  // user clicks 'x' to exit minimap view
+}
+
+function viewTickets() {
+  // player can see their current hand of tickets whenever
+  // called when user clicks on see tickets button OR within useTicket function
+
+  // warning screen appears - hit ok to view OR 3 seconds?
+  // tickets available appear
+  // users can click 'x' to exit ticket view  => is clicking 'x' another function? think so
+}
+
+function useTicket() {
+  // used by player on current location, ends their turn once successful
+  // called when user clicks on use ticket Button
+
+  // warning screen appears - hit ok to view OR 3 seconds?
+  // tickets available appear
+  // user selects ticket they want to use
+  // hits ok/submit
+  // if ticket info matches either color or type, show if right or wrong
+  // then current player changes
+  // else alert pick another card
+  // users can change mind and click 'x' to exit ticket view
+}
+
+
+
+/*
+
+        5. Try to catch ghoul clicked
+          6. when clicked, confirmation popup appears
+            7. if sure, result dramatically shows
+              8. if wrong, current player removed from game
+                9. current player changes
+              9. if right, game ends and current player congratulated
+            7. if no, close window
+
+
+        5. End turn appears
+          6. current player changes
+      4. Button to open hand appears
+        5. When clicked, 3 second delay and then hand shows
+        6. Players click off hand to close or hit 'x'
+      7. Players click on space they want to move to, moves left count down
+    8. screen shows roll dice button again, hides other commands
 
 /*console.table(badGuy);
 console.table(diceRollResult);

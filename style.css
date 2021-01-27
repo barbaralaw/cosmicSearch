@@ -23,7 +23,8 @@ body {
 
 #playerSelection,
 #addPlayersMenu,
-#helperButtons {
+#helperButtons,
+#gameControls {
   display: none;
 }
 
@@ -142,10 +143,13 @@ body {
   font-size: 50px;
 }
 
-.locations.available:hover {
-  border: 3px solid white;
+.locations.available {
+  background-color: rgba(0, 150, 50, .35);
+  border: 3px solid rgb(0, 150, 50);
   border-radius: 25%;
+  cursor: pointer;
 }
+
 
 .loc0   { grid-column: 3/5;   grid-row: 3/5;}
 .loc1   { grid-column: 5/7;   grid-row: 1/3;}
