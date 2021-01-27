@@ -138,7 +138,38 @@ function toggle(item) {
   item.classList.toggle('selected');
 }
 
+//Places player's token image on desired location
+function placeToken(locToPlace, currentPlayer) {
+  let mapToken = document.createElement("img");
+  let imageFileStr = currentPlayer.token;
+  mapToken.setAttribute("src", imageFileStr);
+  mapToken.setAttribute("alt", `Player ${currentPlayer}'s Token`)
+  document.querySelector(`.loc${currentPlayer.location}`).appendChild(mapToken);
+}
 
+function removeToken(locToRemove) {
+  let top = document.querySelector(`.loc${locToRemove}`);
+  let nested = top.querySelector(`img`);
+  top.removeChild(nested);
+}
+
+function neighborsAvail() {
+  let neighbors = allLocations[currentPlayer.location];
+  console.log(`Neighbors are `, neighbors);
+  for (let j=0; j<neighbors.length; j++) {
+    document.querySelector(`.loc${neighbors[j]}`).classList.add("available");
+  }
+  turnControls.style.display = "block";
+}
+
+function resetNeighbors() {
+  for (let i=0; i<allLocations.length; i++) {
+    let curClass = document.querySelector(`.loc${i}`);
+    if (curClass.classList.contains("available")) {
+      document.querySelector(`.loc${i}`).classList.remove("available");
+    }
+  }
+}
 
 /*###########################################
 #                                           #
@@ -152,7 +183,9 @@ let badGuy;
 let drawDeck;
 let currentPlayer;
 let curToken;
+let movesLeft = 0;
 let tokenList = [];
+let hasRolled = false;
 
 const playerSelection = document.getElementById("playerSelection");
 const addPlayersMenu = document.getElementById('addPlayersMenu');
@@ -174,6 +207,33 @@ document.getElementById("addNewPlayer").addEventListener('click', addNewPlayer);
 document.getElementById("savePlayer").addEventListener('click', savePlayer);
 document.getElementById("playersAdded").addEventListener('click', playersAdded);
 document.getElementById("rollDice").addEventListener('click', beginTurn);
+document.getElementById("useTicket").addEventListener('click', useTicket);
+document.querySelector(".loc0").addEventListener('click', function() {makeAMove(0)});
+document.querySelector(".loc1").addEventListener('click', function() {makeAMove(1)});
+document.querySelector(".loc2").addEventListener('click', function() {makeAMove(2)});
+document.querySelector(".loc3").addEventListener('click', function() {makeAMove(3)});
+document.querySelector(".loc4").addEventListener('click', function() {makeAMove(4)});
+document.querySelector(".loc5").addEventListener('click', function() {makeAMove(5)});
+document.querySelector(".loc6").addEventListener('click', function() {makeAMove(6)});
+document.querySelector(".loc7").addEventListener('click', function() {makeAMove(7)});
+document.querySelector(".loc8").addEventListener('click', function() {makeAMove(8)});
+document.querySelector(".loc9").addEventListener('click', function() {makeAMove(9)});
+document.querySelector(".loc10").addEventListener('click', function() {makeAMove(10)});
+document.querySelector(".loc11").addEventListener('click', function() {makeAMove(11)});
+document.querySelector(".loc12").addEventListener('click', function() {makeAMove(12)});
+document.querySelector(".loc13").addEventListener('click', function() {makeAMove(13)});
+document.querySelector(".loc14").addEventListener('click', function() {makeAMove(14)});
+document.querySelector(".loc15").addEventListener('click', function() {makeAMove(15)});
+document.querySelector(".loc16").addEventListener('click', function() {makeAMove(16)});
+document.querySelector(".loc17").addEventListener('click', function() {makeAMove(17)});
+document.querySelector(".loc18").addEventListener('click', function() {makeAMove(18)});
+document.querySelector(".loc19").addEventListener('click', function() {makeAMove(19)});
+document.querySelector(".loc20").addEventListener('click', function() {makeAMove(20)});
+document.querySelector(".loc21").addEventListener('click', function() {makeAMove(21)});
+document.querySelector(".loc22").addEventListener('click', function() {makeAMove(22)});
+document.querySelector(".loc23").addEventListener('click', function() {makeAMove(23)});
+document.querySelector(".loc24").addEventListener('click', function() {makeAMove(24)});
+//document.querySelector(".locations").addEventListener('click', function() {moveHere(allLocations[0])});
 document.querySelector(".token1").addEventListener('click', function() {toggle(tokenList[0])});
 document.querySelector(".token2").addEventListener('click', function() {toggle(tokenList[1])});
 document.querySelector(".token3").addEventListener('click', function() {toggle(tokenList[2])});
@@ -254,22 +314,27 @@ function selectToken() {
 }
 
 function setStartLocation() {
+  // let index = getRandomIndex(0, allLocations.length);
+  // while (any of the assigned player locations === index) {
+  // get new random Index
+  // return index
   return getRandomIndex(0, allLocations.length);
 }
 
-function MakeCharacter(playerName, token, location, tickets, movesLeft) {  //miniMap
-  this.playerName = playerName
-  this.token = token
-  this.location = location
-  this.tickets = tickets
-  this.movesLeft = movesLeft
+function MakeCharacter(playerName, playerNum, token, location, tickets, movesLeft) {  //miniMap
+  this.playerName = playerName  // string "player1", etc.
+  this.playerNum = playerNum
+  this.token = token            // string "/images/tokenX.jpg", etc.
+  this.location = location      // number 0-24
+  this.tickets = tickets        // array of strings
+  this.movesLeft = movesLeft    // number
   // this.miniMap = miniMap
 }
 
 // Players choose tokens & starting points
 function savePlayer() {
   let tokenInfo = selectToken();
-  allPlayers.push(new MakeCharacter(`player${numOfPlayers}`, tokenInfo[1], setStartLocation(), [], 0)) ;
+  allPlayers.push(new MakeCharacter(`player${numOfPlayers}`, allPlayers.length+1, tokenInfo[1], setStartLocation(), [], 0));
   if (allPlayers.length < 4) {
     document.getElementById("addNewPlayer").style.display = "block";
   }
@@ -309,13 +374,15 @@ function playersAdded() {
     turnControls.style.display = "none";
     for (let i=0; i<allPlayers.length; i++) {
       let startingPlace = allPlayers[i].location;
-      let mapToken = document.createElement("img");
+      placeToken(startingPlace, allPlayers[i]);
+      /*let mapToken = document.createElement("img");
       let imageFileStr = allPlayers[i].token;
       mapToken.setAttribute("src", imageFileStr);
       mapToken.setAttribute("alt", `Player ${i+1} Token`)
-      document.querySelector(`.loc${allPlayers[i].location}`).appendChild(mapToken);
+      document.querySelector(`.loc${allPlayers[i].location}`).appendChild(mapToken);*/
     }
     currentPlayer = allPlayers[0];
+    console.table(currentPlayer);
     curPlay.innerText = `It is player 1's turn`;
   }
 }
@@ -330,35 +397,58 @@ function playersAdded() {
 #                                           #
 ###########################################*/
 
-// add available class to locations where players can move
-
 function rollDice() {
   return diceValues[getRandomIndex(0, diceValues.length)];
 }
 
 function beginTurn() {
   let diceRollResult = rollDice();
+  hasRolled = true;
   roll.innerText = `Rolled ${diceRollResult[0]} moves & ${diceRollResult[1]} tickets.}`;
-  let movesLeft = diceRollResult[0];
+  movesLeft = diceRollResult[0];
   for (let i=0; i<diceRollResult[1]; i++) {
     currentPlayer.tickets.push(drawDeck.shift());
     console.log(currentPlayer.tickets);
   }
-  //Available moves appear on board
-  let neighbors = allLocations[currentPlayer.location];
-  console.log(neighbors);
-  for (let j=0; j<neighbors.length; j++) {
-    document.querySelector(`.loc${neighbors[j]}`).classList.add("available");
-  }
+  neighborsAvail()
   turnControls.style.display = "block";
 }
 
-function makeAMove() {
+function moveHere(loc) {
+  console.log(`I clicked here `, loc);
+  // need to check class list of .loc(loc)
+  if (hasRolled && movesLeft > 0 && document.querySelector(`.loc${loc}`).classList.contains("available")) {
+    console.log(`current player . location is `,currentPlayer.location)
+    movesLeft--;
+    removeToken(currentPlayer.location);
+    currentPlayer.location = loc;
+    placeToken(loc, currentPlayer);
+    resetNeighbors()
+    //document.querySelectorAll(".locations").classList.remove("available");
+    return(loc)
+  }
+}
+
+function makeAMove(loc) {
   // called when user clicks on a location
+  if (movesLeft > 0) {
+    let newSpot = moveHere(loc);
+    neighborsAvail()
+  } else {
+    resetNeighbors()
+}
+
+function changeCurrentPlayer() {
+  if (currentPlayer.playerNum < allPlayers.length) {
+    currentPlayer = allPlayers[currentPlayer.playerNum];
+  } else {
+    currentPlayer = allPlayers[0];
+  }
+}
+
 
   // check that location has class available
   // if so, move the token to that location
-  // lower move count by 1
   // shift available moves => turn that into a function that is called here and in beginTurn
   // if movesLeft === 0, remove available from all locations
 }
@@ -396,10 +486,16 @@ function useTicket() {
   // users can change mind and click 'x' to exit ticket view
 }
 
+function endTurn() {
+  // pop up confirmation screen
+    changeCurrentPlayer()
+}
 
 
 /*
+**** Make an ending turn function that is called by other ways turn is ended
 
+        // catchGhoul function
         5. Try to catch ghoul clicked
           6. when clicked, confirmation popup appears
             7. if sure, result dramatically shows
@@ -408,16 +504,15 @@ function useTicket() {
               9. if right, game ends and current player congratulated
             7. if no, close window
 
-
+        // endTurn function
         5. End turn appears
           6. current player changes
       4. Button to open hand appears
         5. When clicked, 3 second delay and then hand shows
         6. Players click off hand to close or hit 'x'
-      7. Players click on space they want to move to, moves left count down
+
+    // how to implement?
+    8. hasRolled set to false
     8. screen shows roll dice button again, hides other commands
 
-/*console.table(badGuy);
-console.table(diceRollResult);
-console.table(ticketValues);
-console.table(drawDeck);*/
+*/
