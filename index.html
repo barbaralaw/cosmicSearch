@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Exo&display=swap" rel="stylesheet">
     <link rel="icon" href="images/favicon.png">
     <title>Cosmic Search</title>
   </head>
@@ -17,6 +19,21 @@
         <h3 id="curPlay"></h3>
         <h3 id="roll"></h3>
         <h3 id="moves"></h3>
+      </div>
+
+      <div id="winAttempt">
+        <button type="button" class="closeWindow">X</button>
+
+        <p>If the prize is not hidden at your current location you will lose and be removed from the game.</p>
+        <div class="doubleCheck" id="doubleCheck">
+          Click here if you're sure!
+        </div>
+
+      </div>
+
+      <div id="wentForIt">
+        <h2 id="verdict"></h2>
+        <p id="sentence"></p>
       </div>
 
       <div id="turnControls">
@@ -34,20 +51,6 @@
 
         <div id="ticketView">
           <button type="button" class="closeWindow">X</button>
-        </div>
-
-        <div id="winAttempt">
-          <button type="button" class="closeWindow">X</button>
-
-          <p>If the prize is not hidden at your current location you will lose and be removed from the game.</p>
-          <div class="doubleCheck" id="doubleCheck">
-            Click here if you're sure!
-          </div>
-
-          <div id="wentForIt">
-            <h2 id="verdict"></h2>
-            <p id="sentence"></p>
-          </div>
         </div>
 
         <div id="playerSelection">
@@ -154,7 +157,9 @@
 
 
     <footer>
-      A <a href="https://www.barbaralaw.me">Barbara Law</a> creation
+      <div class="">
+        A <a href="https://www.barbaralaw.me">Barbara Law</a> creation
+      </div>
     </footer>
   <script src="script.js" charset="utf-8"></script>
   </body>

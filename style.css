@@ -1,5 +1,6 @@
 html {
   font-size: 62.5%;
+  font-family: 'Exo', sans-serif;
 }
 
 body {
@@ -84,7 +85,7 @@ main {
   border-radius: 15%;
   z-index: 100;
   text-align: center;
-  font-size: 10rem;
+  font-size: 8rem;
 }
 
 #rollDice {
@@ -130,11 +131,12 @@ main {
   grid-auto-columns: minmax(41.25px, auto);
   grid-column: 3/16;
   grid-row: 5/14;
-  background-color: blue;
+  background-color: rgba(24, 15, 56);
   border: 8px solid navy;
   border-radius: 15%;
   z-index: 101;
   text-align: center;
+  font-size: 2rem;
 }
 
 #selectionPrompt {
@@ -344,4 +346,29 @@ header p,
 #ticketView div {
   font-size: 2rem;
   color: black;
+}
+
+#wentForIt {
+  width: 850px;
+  height: 150px;
+  font-size: 2.75rem;
+  clear: both;
+}
+
+#winAttempt {
+  font-size: 2.25rem;
+}
+
+foooer,
+footer a {
+  color: white;
+}
+
+footer {
+  font-size: 2rem;
+}
+
+footer div {
+  padding: 2rem;
+  float: right;
 }
