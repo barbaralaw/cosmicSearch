@@ -405,7 +405,7 @@ function playersAdded() {
       document.querySelector(`.loc${allPlayers[i].location}`).appendChild(mapToken);*/
     }
     currentPlayer = allPlayers[0];
-    curPlay.innerText = `It is player 1's turn`;
+    curPlay.innerText = `It is player ${currentPlayer.playerNum}'s turn`;
   }
 }
 
