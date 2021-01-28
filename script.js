@@ -187,6 +187,10 @@ function closeRules() {
   rules.style.display = "none";
 }
 
+function closeTickets() {
+  ticketView.style.display = "none";
+}
+
 /*###########################################
 #                                           #
 ##   INITIAL VARIABLES & EVENT LISTENERS   ##
@@ -237,6 +241,7 @@ document.getElementById("restart").addEventListener('click', restart);
 document.querySelector(".doubleCheck").addEventListener('click', claimPrize);
 document.querySelector(".closeWindow").addEventListener('click', closeWindow);
 document.querySelector(".closeRules").addEventListener('click', closeRules);
+document.querySelector(".closeTickets").addEventListener('click', closeTickets);
 document.querySelector(".loc0").addEventListener('click', function() {makeAMove(0)});
 document.querySelector(".loc1").addEventListener('click', function() {makeAMove(1)});
 document.querySelector(".loc2").addEventListener('click', function() {makeAMove(2)});
