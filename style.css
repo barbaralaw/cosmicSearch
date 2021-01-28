@@ -48,7 +48,36 @@ body {
   font-size: 10rem;
 }
 
-#startButton:hover {
+#rollDice {
+  display: grid;
+  grid-column: 5/12;
+  grid-row: 5/8;
+  background-color: red;
+  border: 8px solid yellow;
+  border-radius: 15%;
+  z-index: 100;
+  text-align: center;
+  font-size: 10rem;
+}
+
+#ticketView {
+  display: none;
+  grid-column: 4/15;
+  grid-row: 5/14;
+  background-color: red;
+  border: 8px solid yellow;
+  border-radius: 15%;
+  z-index: 100;
+  text-align: center;
+}
+
+#ticketView.closeWindow {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#startButton:hover,
+#rollDice:hover {
   cursor: pointer;
   background-color: pink;
 }
@@ -68,8 +97,12 @@ body {
   text-align: center;
 }
 
+#selectionPrompt {
+  grid-column: 1/17;
+  grid-row: 1/3;
+}
+
 .token {
-  display: none;
   grid-row: 4/6;
   border-radius: 50%;
   border: 4px solid magenta;
@@ -104,16 +137,22 @@ body {
   grid-column: 14/16;
 }
 
-#addNewPlayer:hover,
 #savePlayer:hover,
-#playersAdded:hover {
+#playersAdded:hover,
+#miniMapView:hover,
+#useTicket:hover,
+#endTurn:hover,
+#claimPrize:hover {
   transform: scale(1.2);
   cursor: pointer;
 }
 
-#addNewPlayer,
 #savePlayer,
-#playersAdded {
+#playersAdded,
+#miniMapView,
+#useTicket,
+#endTurn,
+#claimPrize {
   background-color: red;
   border: 4px solid yellow;
   border-radius: 15%;
@@ -121,19 +160,41 @@ body {
   text-align: center;
 }
 
-#addNewPlayer {
-  grid-column: 6/12;
-  grid-row: 2/7;
-}
-
 #savePlayer {
-  grid-column: 2/7;
+  grid-column: 2/8;
   grid-row: 8/10;
 }
 
 #playersAdded {
   grid-column: 10/16;
   grid-row: 8/10;
+}
+
+#turnControls {
+  display: none;
+  max-width: 850px;
+}
+
+/*
+#miniMapView {
+  grid-column: 2/8;
+  grid-row: 3/5;
+}
+*/
+
+#useTicket {
+  grid-column: 2/8;
+  grid-row: 3/5;
+}
+
+#endTurn {
+  grid-column: 10/16;
+  grid-row: 3/5;
+}
+
+#claimPrize {
+  grid-column: 5/12;
+  grid-row: 8/11;
 }
 
 .locations {
@@ -193,4 +254,32 @@ body {
 
 #playerSelection .selected {
   border: 5px solid green;
+}
+
+#addNewPlayer {
+  display: none;
+}
+
+#ticketView button {
+  width: 30px;
+  height: 30px;
+}
+
+#ticketView div {
+  border: 3px solid yellow;
+  border-radius: 15px;
+  height: 3rem;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 1.5rem;
+}
+
+#ticketView div:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+#winAttempt,
+#wentForIt {
+  display: none;
 }

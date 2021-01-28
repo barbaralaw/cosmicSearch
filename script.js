@@ -1,15 +1,9 @@
-// try assiging tokens in DOM to a token list
-
-
-
-/*
-function = CreateMysteryCards(ghoulName, locationColor, locationType, locationName) {
-  this.ghoulName = ghoulName
-  this.locationColor = locationColor
-  this.locationType = locationType
-  this.locationName = locationName
-}
-*/
+/* TO DO
+comment code
+add real token images
+note whose turn it is somehow (scale token image?)
+input rest of mystery cards
+fix number of moves
 
 
 /*###########################################
@@ -19,26 +13,27 @@ function = CreateMysteryCards(ghoulName, locationColor, locationType, locationNa
 ###########################################*/
 
 const mysteryCards = [
-  { ghoulName: "Mummy",     locationColor: "yellow",  locationType: "planet",         locationName: "ferrisWheel" },
-  { ghoulName: "Mummy",     locationColor: "purple",  locationType: "moon",           locationName: "pinballHall" },
-  { ghoulName: "Mummy",     locationColor: "green",   locationType: "comet",          locationName: "costumeShop" },
-  { ghoulName: "Mummy",     locationColor: "red",     locationType: "planet",         locationName: "logLagoon" },
-  { ghoulName: "Mummy",     locationColor: "blue",    locationType: "comet",          locationName: "ticketBooth" },
-  { ghoulName: "Sorceress", locationColor: "yellow",  locationType: "moon",           locationName: "waterGunGame" },
-  { ghoulName: "Sorceress", locationColor: "purple",  locationType: "nebula",         locationName: "oldWestStuntShow" },
-  { ghoulName: "Sorceress", locationColor: "green",   locationType: "planet",         locationName: "rollerCoaster" },
-  { ghoulName: "Sorceress", locationColor: "red",     locationType: "constellation",  locationName: "cottonCandyStand" },
-  { ghoulName: "Sorceress", locationColor: "blue",    locationType: "constellation",  locationName: "iceCreamStand" },
-  { ghoulName: "Werewolf",  locationColor: "yellow",  locationType: "constellation",  locationName: "popcornWagon" },
-  { ghoulName: "Werewolf",  locationColor: "purple",  locationType: "planet",         locationName: "carousel" },
-  { ghoulName: "Werewolf",  locationColor: "green",   locationType: "moon",           locationName: "ballTossGame" },
-  { ghoulName: "Werewolf",  locationColor: "red",     locationType: "comet",          locationName: "tshirtShop" },
-  { ghoulName: "Werewolf",  locationColor: "blue",    locationType: "moon",           locationName: "balloonPopGame" },
-  { ghoulName: "VoodooGuy", locationColor: "purple",  locationType: "constellation",  locationName: "hotDogHut" },
-  { ghoulName: "VoodooGuy", locationColor: "green",   locationType: "constellation",  locationName: "pretzelShack" },
-  { ghoulName: "VoodooGuy", locationColor: "red",     locationType: "moon",           locationName: "ringToss" },
-  { ghoulName: "VoodooGuy", locationColor: "red",     locationType: "nebula",         locationName: "puppetTheater" },
-  { ghoulName: "VoodooGuy", locationColor: "blue",    locationType: "planet",         locationName: "flipperRide" },
+  /*       FUTURE PROPERTIES TO ADD:   prizeName & locationName */
+  { locationColor: "yellow",  locationType: "planet",},
+  { locationColor: "purple",  locationType: "moon",},
+  { locationColor: "green",   locationType: "comet",},
+  { locationColor: "red",     locationType: "planet",},
+  { locationColor: "blue",    locationType: "comet",},
+  { locationColor: "yellow",  locationType: "moon",},
+  { locationColor: "purple",  locationType: "nebula",},
+  { locationColor: "green",   locationType: "planet",},
+  { locationColor: "red",     locationType: "constellation",},
+  { locationColor: "blue",    locationType: "constellation",},
+  { locationColor: "yellow",  locationType: "constellation",},
+  { locationColor: "purple",  locationType: "planet",},
+  { locationColor: "green",   locationType: "moon",},
+  { locationColor: "red",     locationType: "comet",},
+  { locationColor: "blue",    locationType: "moon",},
+  { locationColor: "purple",  locationType: "constellation",},
+  { locationColor: "green",   locationType: "constellation",},
+  { locationColor: "red",     locationType: "moon",},
+  { locationColor: "red",     locationType: "nebula",},
+  { locationColor: "blue",    locationType: "planet",}
 ];
 
 const ticketValues = [
@@ -51,8 +46,9 @@ const ticketValues = [
   writeTicket('planet'), writeTicket('planet'), writeTicket('planet'),
   writeTicket('moon'), writeTicket('moon'), writeTicket('moon'),
   writeTicket('comet'), writeTicket('comet'), writeTicket('comet'),
-  writeTicket('constellation'), writeTicket('constellation'), writeTicket('constellation'),
-  /*`TRAP! Choose another player. That player may not move on their next turn.`,
+  writeTicket('constellation'), writeTicket('constellation'), writeTicket('constellation')
+  /*      FUTURE TICKET CARDS TO ADD INTEREST TO GAME
+  `TRAP! Choose another player. That player may not move on their next turn.`,
   `TRAP! Choose another player. That player may not move on their next turn.`,
   `STEAL! Take one card from another player.`,
   `STEAL! Take one card from another player.`,
@@ -71,36 +67,33 @@ const diceValues = [
 ];
 
 const allLocations = [
-  [1,5],            // toyShop
-  [0,2],            // pretzelShack
-  [1,3,6],          // waterGunGame
-  [2,4,7],          // oldWestStuntShow
-  [3,8],            // ringToss
-  [0,9],            // balloonPopGame
-  [2,12],           // flipperRide
-  [3,8,13],         // costumeShop
-  [4,7,14],         // iceCreamStand
-  [5, 10],          // puppetTheater
-  [9, 11, 15],      // hotDogHut
-  [10, 12],         // tshirtShop
-  [6, 11, 13],      // magicShow
-  [7, 12, 18],      // carousel
-  [8, 20],          // bigStage
-  [10, 16],         // ferrisWheel
-  [15, 17],         // ticketBooth
-  [10, 16, 18, 21], // ballTossGame
-  [13, 17, 23],     // cottonCandyStand
-  [20, 23],         // rollerCoaster
-  [14, 19],         // balloonCart
-  [17, 22],         // popcornWagon
-  [21, 24],         // logLagoon
-  [18, 19, 24],     // animalShow
-  [22, 23]          // pinballHall
+// [indexes of immediate neighbors],[location attributes]
+  [[1,5],["yellow", "comet"]],
+  [[0,2],["green", "constellation"]],
+  [[1,3,6],["yellow", "moon"]],
+  [[2,4,7],["purple", "nebula"]],
+  [[3,8],["red", "moon"]],
+  [[0,9],["blue", "moon"]],
+  [[2,12],["blue", "planet"]],
+  [[3,8,13],["green", "comet"]],
+  [[4,7,14],["blue", "constellation"]],
+  [[5, 10],["red", "nebula"]],
+  [[9, 11, 15],["purple", "constellation"]],
+  [[10, 12],["red", "comet"]],
+  [[6, 11, 13],["green", "nebula"]],
+  [[7, 12, 18],["purple", "planet"]],
+  [[8, 20],["yellow", "nebula"]],
+  [[10, 16],["yellow", "planet"]],
+  [[15, 17],["blue", "comet"]],
+  [[10, 16, 18, 21],["green", "moon"]],
+  [[13, 17, 23],["red", "constellation"]],
+  [[20, 23],["green", "planet"]],
+  [[14, 19],["purple", "comet"]],
+  [[17, 22],["yellow", "constellation"]],
+  [[21, 24],["red", "planet"]],
+  [[18, 19, 24],["blue", "nebula"]],
+  [[22, 23],["purple", "moon"]]
 ];
-
-function writeTicket(value) {
-  return `See if the ghoul is at a ${value} location.`
-}
 
 
 
@@ -109,6 +102,10 @@ function writeTicket(value) {
 ########      HELPER FUNCTIONS       ########
 #                                           #
 ###########################################*/
+
+function writeTicket(value) {
+  return [`See if the prize is at a ${value} location.`, value];
+}
 
 function getRandomIndex(min, max) {
   min = Math.ceil(min);
@@ -143,23 +140,25 @@ function placeToken(locToPlace, currentPlayer) {
   let mapToken = document.createElement("img");
   let imageFileStr = currentPlayer.token;
   mapToken.setAttribute("src", imageFileStr);
+  mapToken.setAttribute("data-p", currentPlayer.playerNum)
   mapToken.setAttribute("alt", `Player ${currentPlayer}'s Token`)
   document.querySelector(`.loc${currentPlayer.location}`).appendChild(mapToken);
 }
 
 function removeToken(locToRemove) {
   let top = document.querySelector(`.loc${locToRemove}`);
-  let nested = top.querySelector(`img`);
+  let playNumStr = currentPlayer.playerNum.toString()
+  let nested = top.querySelector(`img[data-p="${playNumStr}"]`);
   top.removeChild(nested);
 }
 
 function neighborsAvail() {
-  let neighbors = allLocations[currentPlayer.location];
-  console.log(`Neighbors are `, neighbors);
+  let neighbors = allLocations[currentPlayer.location][0];
   for (let j=0; j<neighbors.length; j++) {
     document.querySelector(`.loc${neighbors[j]}`).classList.add("available");
   }
-  turnControls.style.display = "block";
+  rollDiceButton.style.display = "none";
+  turnControls.style.display = "grid";
 }
 
 function resetNeighbors() {
@@ -169,6 +168,12 @@ function resetNeighbors() {
       document.querySelector(`.loc${i}`).classList.remove("available");
     }
   }
+}
+
+function closeWindow() {
+  // change display of parent element to none
+  let parent = this.parentElement;
+  parent.style.display = "none";
 }
 
 /*###########################################
@@ -187,8 +192,9 @@ let movesLeft = 0;
 let tokenList = [];
 let hasRolled = false;
 
+const actionsMini = document.getElementById("actionsMini");
 const playerSelection = document.getElementById("playerSelection");
-const addPlayersMenu = document.getElementById('addPlayersMenu');
+const selectionPrompt = document.getElementById("selectionPrompt");
 const helperButtons = document.getElementById('helperButtons');
 const gameControls = document.getElementById('gameControls');
 const turnControls = document.getElementById('turnControls');
@@ -196,18 +202,25 @@ const rollDiceButton = document.getElementById('rollDice');
 const startButton = document.getElementById('startButton');
 const curPlay = document.getElementById('curPlay');
 const roll = document.getElementById('roll');
+const prizeAttemptWindow = document.getElementById('winAttempt');
+const doubleCheck = document.getElementById('doubleCheck');
+const wentForIt = document.getElementById('wentForIt');
 tokenList[0] = document.querySelector(".token1");  //token 1
 tokenList[1] = document.querySelector(".token2");  //token 2
 tokenList[2] = document.querySelector(".token3");  //token 3
 tokenList[3] = document.querySelector(".token4");  //token 4
 tokenList[4] = document.querySelector(".token5");  //token 5
 
+
 document.getElementById("startButton").addEventListener('click', startGame);
-document.getElementById("addNewPlayer").addEventListener('click', addNewPlayer);
 document.getElementById("savePlayer").addEventListener('click', savePlayer);
 document.getElementById("playersAdded").addEventListener('click', playersAdded);
 document.getElementById("rollDice").addEventListener('click', beginTurn);
+document.getElementById("endTurn").addEventListener('click', endTurn);
 document.getElementById("useTicket").addEventListener('click', useTicket);
+document.getElementById("claimPrize").addEventListener('click', tryToClaimPrize);
+document.querySelector(".doubleCheck").addEventListener('click', claimPrize);
+document.querySelector(".closeWindow").addEventListener('click', closeWindow);
 document.querySelector(".loc0").addEventListener('click', function() {makeAMove(0)});
 document.querySelector(".loc1").addEventListener('click', function() {makeAMove(1)});
 document.querySelector(".loc2").addEventListener('click', function() {makeAMove(2)});
@@ -233,7 +246,6 @@ document.querySelector(".loc21").addEventListener('click', function() {makeAMove
 document.querySelector(".loc22").addEventListener('click', function() {makeAMove(22)});
 document.querySelector(".loc23").addEventListener('click', function() {makeAMove(23)});
 document.querySelector(".loc24").addEventListener('click', function() {makeAMove(24)});
-//document.querySelector(".locations").addEventListener('click', function() {moveHere(allLocations[0])});
 document.querySelector(".token1").addEventListener('click', function() {toggle(tokenList[0])});
 document.querySelector(".token2").addEventListener('click', function() {toggle(tokenList[1])});
 document.querySelector(".token3").addEventListener('click', function() {toggle(tokenList[2])});
@@ -259,6 +271,7 @@ function startGame() {
   playerSelection.style.display = "grid";
   badGuy = setBadGuy();
   drawDeck = shuffleArray(ticketValues);
+  selectionPrompt.innerText = `Please select a character token for Player${allPlayers.length+1}`;
 };
 
 
@@ -299,11 +312,6 @@ function selectToken() {
   } else if (tokensToggled > 1) {
     alert('You may only select 1 token')
   } else {
-    tokenList[0].style.display = "none";
-    tokenList[1].style.display = "none";
-    tokenList[2].style.display = "none";
-    tokenList[3].style.display = "none";
-    tokenList[4].style.display = "none";
     numOfPlayers++;
     returnInfo.push(chosenTokenNum);
     returnInfo.push(`images/token${chosenTokenNum}.jpg`);
@@ -314,10 +322,6 @@ function selectToken() {
 }
 
 function setStartLocation() {
-  // let index = getRandomIndex(0, allLocations.length);
-  // while (any of the assigned player locations === index) {
-  // get new random Index
-  // return index
   return getRandomIndex(0, allLocations.length);
 }
 
@@ -333,23 +337,12 @@ function MakeCharacter(playerName, playerNum, token, location, tickets, movesLef
 
 // Players choose tokens & starting points
 function savePlayer() {
-  let tokenInfo = selectToken();
-  allPlayers.push(new MakeCharacter(`player${numOfPlayers}`, allPlayers.length+1, tokenInfo[1], setStartLocation(), [], 0));
-  if (allPlayers.length < 4) {
-    document.getElementById("addNewPlayer").style.display = "block";
-  }
-}
-
-function addNewPlayer() {
-  if (allPlayers.length >= 4) {
-    alert('You have 4 players already, please Start Game')
+  if (allPlayers.length >= 3) {
+    selectionPrompt.innerText = "You have 4 players already, please Start Game.";
   } else {
-    tokenList[0].style.display = "block";
-    tokenList[1].style.display = "block";
-    tokenList[2].style.display = "block";
-    tokenList[3].style.display = "block";
-    tokenList[4].style.display = "block";
-    document.getElementById("addNewPlayer").style.display = "none";
+    selectionPrompt.innerText = `Please select a character token for Player${allPlayers.length+2}`;
+    let tokenInfo = selectToken();
+    allPlayers.push(new MakeCharacter(`player${numOfPlayers}`, allPlayers.length+1, tokenInfo[1], setStartLocation(), [], 0));
   }
 }
 
@@ -367,11 +360,20 @@ function playersAdded() {
   if (allPlayers.length < 2) {
     alert('You need at least 2 players')
   } else {
-    addPlayersMenu.style.display = "none";
-    playerSelection.style.display = "none";
     helperButtons.style.display = "block";
-    gameControls.style.display = "block";
-    turnControls.style.display = "none";
+    turnControls.style.display = "grid";
+    tokenList[0].style.display = "none";
+    tokenList[1].style.display = "none";
+    tokenList[2].style.display = "none";
+    tokenList[3].style.display = "none";
+    tokenList[4].style.display = "none";
+    rollDiceButton.style.display = "block";
+    playerSelection.style.display = "none"
+    //miniMapView1.style.display = "block";
+    //useTicket1.style.display = "block";
+    //endTurn1.style.display = "block";
+    //claimPrize1.style.display = "block";
+
     for (let i=0; i<allPlayers.length; i++) {
       let startingPlace = allPlayers[i].location;
       placeToken(startingPlace, allPlayers[i]);
@@ -382,7 +384,6 @@ function playersAdded() {
       document.querySelector(`.loc${allPlayers[i].location}`).appendChild(mapToken);*/
     }
     currentPlayer = allPlayers[0];
-    console.table(currentPlayer);
     curPlay.innerText = `It is player 1's turn`;
   }
 }
@@ -408,23 +409,18 @@ function beginTurn() {
   movesLeft = diceRollResult[0];
   for (let i=0; i<diceRollResult[1]; i++) {
     currentPlayer.tickets.push(drawDeck.shift());
-    console.log(currentPlayer.tickets);
   }
   neighborsAvail()
-  turnControls.style.display = "block";
+  turnControls.style.display = "grid";
 }
 
 function moveHere(loc) {
-  console.log(`I clicked here `, loc);
-  // need to check class list of .loc(loc)
   if (hasRolled && movesLeft > 0 && document.querySelector(`.loc${loc}`).classList.contains("available")) {
-    console.log(`current player . location is `,currentPlayer.location)
     movesLeft--;
     removeToken(currentPlayer.location);
     currentPlayer.location = loc;
     placeToken(loc, currentPlayer);
     resetNeighbors()
-    //document.querySelectorAll(".locations").classList.remove("available");
     return(loc)
   }
 }
@@ -436,83 +432,74 @@ function makeAMove(loc) {
     neighborsAvail()
   } else {
     resetNeighbors()
+  }
 }
 
 function changeCurrentPlayer() {
+  resetNeighbors()
   if (currentPlayer.playerNum < allPlayers.length) {
     currentPlayer = allPlayers[currentPlayer.playerNum];
   } else {
     currentPlayer = allPlayers[0];
   }
+  return currentPlayer.playerNum;
 }
 
-
-  // check that location has class available
-  // if so, move the token to that location
-  // shift available moves => turn that into a function that is called here and in beginTurn
-  // if movesLeft === 0, remove available from all locations
+function clickTicket(i) {
+  if (currentPlayer.tickets[i][1] === allLocations[currentPlayer.location][1][0] ||
+  currentPlayer.tickets[i][1] === allLocations[currentPlayer.location][1][1]) {
+    if (currentPlayer.tickets[i][1] === badGuy.locationColor || currentPlayer.tickets[i][1] === badGuy.locationType) {
+      alert(`YES the prize is at a ${currentPlayer.tickets[i][1]} location`);
+    } else {
+      alert(`NO the prize isn't at a ${currentPlayer.tickets[i][1]} location`);
+    }
+    currentPlayer.tickets.splice(i, 1);
+    document.getElementById("ticketView").style.display = "none";
+    endTurn()
+  } else {
+    alert(`Your ticket doesn't match your location.`);
+  }
 }
 
-function miniMap() {
-  // called when user clicks on view/edit minimap
-
-  // warning screen appears - hit ok to view OR 3 seconds?
-  // when user clicks on an element in minimap (how to distinguish minimap from regular?)
-  // options to add X or something good appears
-  // whichever they click on is toggled on that location
-  // user clicks 'x' to exit minimap view
-}
-
-function viewTickets() {
-  // player can see their current hand of tickets whenever
-  // called when user clicks on see tickets button OR within useTicket function
-
-  // warning screen appears - hit ok to view OR 3 seconds?
-  // tickets available appear
-  // users can click 'x' to exit ticket view  => is clicking 'x' another function? think so
+function updateTicketsHeld() {
+  let children = document.getElementById("ticketView").childNodes;
+  for (let i=children.length-1; i>1; i--) {
+    document.getElementById("ticketView").removeChild(children[i]);
+  }
+  for (let i=0; i<currentPlayer.tickets.length; i++) {
+    let curTicket = document.createElement("div");
+    curTicket.innerText = `${currentPlayer.tickets[i][0]}`;
+    curTicket.addEventListener('click', function() {
+      clickTicket(i)
+    })
+    document.getElementById("ticketView").appendChild(curTicket);
+  }
 }
 
 function useTicket() {
-  // used by player on current location, ends their turn once successful
-  // called when user clicks on use ticket Button
-
-  // warning screen appears - hit ok to view OR 3 seconds?
-  // tickets available appear
-  // user selects ticket they want to use
-  // hits ok/submit
-  // if ticket info matches either color or type, show if right or wrong
-  // then current player changes
-  // else alert pick another card
-  // users can change mind and click 'x' to exit ticket view
+  updateTicketsHeld()
+  document.getElementById("ticketView").style.display = "grid";
 }
 
 function endTurn() {
-  // pop up confirmation screen
-    changeCurrentPlayer()
+  changeCurrentPlayer()
+  rollDiceButton.style.display = "block";
 }
 
+function tryToClaimPrize() {
+  turnControls.style.display = "none";
+  winAttempt.style.display = "block";
+}
 
-/*
-**** Make an ending turn function that is called by other ways turn is ended
-
-        // catchGhoul function
-        5. Try to catch ghoul clicked
-          6. when clicked, confirmation popup appears
-            7. if sure, result dramatically shows
-              8. if wrong, current player removed from game
-                9. current player changes
-              9. if right, game ends and current player congratulated
-            7. if no, close window
-
-        // endTurn function
-        5. End turn appears
-          6. current player changes
-      4. Button to open hand appears
-        5. When clicked, 3 second delay and then hand shows
-        6. Players click off hand to close or hit 'x'
-
-    // how to implement?
-    8. hasRolled set to false
-    8. screen shows roll dice button again, hides other commands
-
-*/
+function claimPrize() {
+  doubleCheck.style.display = "none";
+  wentForIt.style.display = "block";
+  if (allLocations[currentPlayer.location][1][0] == badGuy.locationColor && allLocations[currentPlayer.location][1][1] == badGuy.locationType) {
+    verdict.innerText = "CONGRATULATIONS! YOU FOUND THE PRIZE!";
+    sentence.innerText = `Player ${currentPlayer.playerNum} has won the game! Thank you for playing, and please play again soon.`;
+  } else {
+    verdict.innerText = "UH-OH! Sorry, the prize isn't here!";
+    sentence.innerText = `Player ${currentPlayer.playerNum} shot their shot and missed! They have been removed from the game.`;
+    turnControls.style.display = "grid";
+  }
+}
