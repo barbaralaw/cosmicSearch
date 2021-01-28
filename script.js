@@ -1,9 +1,11 @@
-/* TO DO
-comment code
-add real token images
-note whose turn it is somehow (scale token image?)
-input rest of mystery cards
-fix number of moves
+/*
+Original game mechanics from "Scooby-Doo Fright at the Fun Park Game" by Buffalo Games.
+
+Thank you for checking out my project!
+If you liked it, let me know! Twitter: @blawblawLaw
+*/
+
+
 
 
 /*###########################################
@@ -33,7 +35,12 @@ const mysteryCards = [
   { locationColor: "green",   locationType: "constellation",},
   { locationColor: "red",     locationType: "moon",},
   { locationColor: "red",     locationType: "nebula",},
-  { locationColor: "blue",    locationType: "planet",}
+  { locationColor: "blue",    locationType: "planet",},
+  { locationColor: "blue",    locationType: "nebula",},
+  { locationColor: "green",   locationType: "nebula",},
+  { locationColor: "yellow",  locationType: "comet",},
+  { locationColor: "purple",  locationType: "comet",},
+  { locationColor: "yellow",  locationType: "nebula"}
 ];
 
 const ticketValues = [
@@ -176,6 +183,10 @@ function closeWindow() {
   parent.style.display = "none";
 }
 
+function closeRules() {
+  rules.style.display = "none";
+}
+
 /*###########################################
 #                                           #
 ##   INITIAL VARIABLES & EVENT LISTENERS   ##
@@ -195,7 +206,6 @@ let hasRolled = false;
 const actionsMini = document.getElementById("actionsMini");
 const playerSelection = document.getElementById("playerSelection");
 const selectionPrompt = document.getElementById("selectionPrompt");
-const helperButtons = document.getElementById('helperButtons');
 const gameControls = document.getElementById('gameControls');
 const turnControls = document.getElementById('turnControls');
 const rollDiceButton = document.getElementById('rollDice');
@@ -205,6 +215,7 @@ const roll = document.getElementById('roll');
 const prizeAttemptWindow = document.getElementById('winAttempt');
 const doubleCheck = document.getElementById('doubleCheck');
 const wentForIt = document.getElementById('wentForIt');
+const rules = document.querySelector('.rules');
 tokenList[0] = document.querySelector(".token1");  //token 1
 tokenList[1] = document.querySelector(".token2");  //token 2
 tokenList[2] = document.querySelector(".token3");  //token 3
@@ -213,14 +224,19 @@ tokenList[4] = document.querySelector(".token5");  //token 5
 
 
 document.getElementById("startButton").addEventListener('click', startGame);
+document.getElementById("openingRules").addEventListener('click', viewRules);
 document.getElementById("savePlayer").addEventListener('click', savePlayer);
 document.getElementById("playersAdded").addEventListener('click', playersAdded);
 document.getElementById("rollDice").addEventListener('click', beginTurn);
 document.getElementById("endTurn").addEventListener('click', endTurn);
 document.getElementById("useTicket").addEventListener('click', useTicket);
 document.getElementById("claimPrize").addEventListener('click', tryToClaimPrize);
+document.getElementById("rulesButton").addEventListener('click', viewRules);
+document.getElementById("restart").addEventListener('click', restart);
+
 document.querySelector(".doubleCheck").addEventListener('click', claimPrize);
 document.querySelector(".closeWindow").addEventListener('click', closeWindow);
+document.querySelector(".closeRules").addEventListener('click', closeRules);
 document.querySelector(".loc0").addEventListener('click', function() {makeAMove(0)});
 document.querySelector(".loc1").addEventListener('click', function() {makeAMove(1)});
 document.querySelector(".loc2").addEventListener('click', function() {makeAMove(2)});
@@ -268,6 +284,7 @@ function setBadGuy() {
 
 function startGame() {
   startButton.style.display = "none";
+  openingRules.style.display = "none"
   playerSelection.style.display = "grid";
   badGuy = setBadGuy();
   drawDeck = shuffleArray(ticketValues);
@@ -314,7 +331,7 @@ function selectToken() {
   } else {
     numOfPlayers++;
     returnInfo.push(chosenTokenNum);
-    returnInfo.push(`images/token${chosenTokenNum}.jpg`);
+    returnInfo.push(`images/token${chosenTokenNum}.png`);
     tokenList[chosenTokenNum-1].classList.remove("selected");
     tokenList[chosenTokenNum-1].classList.add("taken");
     return returnInfo;
@@ -328,7 +345,7 @@ function setStartLocation() {
 function MakeCharacter(playerName, playerNum, token, location, tickets, movesLeft) {  //miniMap
   this.playerName = playerName  // string "player1", etc.
   this.playerNum = playerNum
-  this.token = token            // string "/images/tokenX.jpg", etc.
+  this.token = token            // string "/images/tokenX.png", etc.
   this.location = location      // number 0-24
   this.tickets = tickets        // array of strings
   this.movesLeft = movesLeft    // number
@@ -360,7 +377,6 @@ function playersAdded() {
   if (allPlayers.length < 2) {
     alert('You need at least 2 players')
   } else {
-    helperButtons.style.display = "block";
     turnControls.style.display = "grid";
     tokenList[0].style.display = "none";
     tokenList[1].style.display = "none";
@@ -407,6 +423,7 @@ function beginTurn() {
   hasRolled = true;
   roll.innerText = `Rolled ${diceRollResult[0]} moves & ${diceRollResult[1]} tickets.}`;
   movesLeft = diceRollResult[0];
+  document.getElementById("moves").innerText = `${movesLeft} moves left`
   for (let i=0; i<diceRollResult[1]; i++) {
     currentPlayer.tickets.push(drawDeck.shift());
   }
@@ -417,11 +434,14 @@ function beginTurn() {
 function moveHere(loc) {
   if (hasRolled && movesLeft > 0 && document.querySelector(`.loc${loc}`).classList.contains("available")) {
     movesLeft--;
+    document.getElementById("moves").innerText = `${movesLeft} moves left`
     removeToken(currentPlayer.location);
     currentPlayer.location = loc;
     placeToken(loc, currentPlayer);
     resetNeighbors()
     return(loc)
+  } else {
+    document.getElementById("moves").innerText = `${movesLeft} moves left`;
   }
 }
 
@@ -431,12 +451,14 @@ function makeAMove(loc) {
     let newSpot = moveHere(loc);
     neighborsAvail()
   } else {
+    document.getElementById("moves").innerText = `${movesLeft} moves left`
     resetNeighbors()
   }
 }
 
 function changeCurrentPlayer() {
   resetNeighbors()
+  document.getElementById("moves").innerText = ``;
   if (currentPlayer.playerNum < allPlayers.length) {
     currentPlayer = allPlayers[currentPlayer.playerNum];
   } else {
@@ -502,4 +524,13 @@ function claimPrize() {
     sentence.innerText = `Player ${currentPlayer.playerNum} shot their shot and missed! They have been removed from the game.`;
     turnControls.style.display = "grid";
   }
+}
+
+function viewRules() {
+  rules.style.display = "block";
+}
+
+function restart() {
+  location.reload()
+  return false
 }

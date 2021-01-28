@@ -7,10 +7,16 @@
   </head>
   <body>
     <header>
-      <p>Welcome to the Cosmic Search!</p>
+      <button type="button" id="rulesButton">Rules</button>
+      <button type="button" id="restart">Restart Game</button>
     </header>
     <main>
       <h1>Cosmic Search</h1>
+      <div id="information">
+        <h3 id="curPlay"></h3>
+        <h3 id="roll"></h3>
+        <h3 id="moves"></h3>
+      </div>
 
       <div id="turnControls">
         <button type="button" class="rollDice" id="rollDice">Roll</button>
@@ -23,6 +29,7 @@
       <div id="mainGameBoard" class="grid">
 
         <div id="startButton">Start</div>
+        <div id="openingRules">Rules</div>
 
         <div id="ticketView">
           <button type="button" class="closeWindow">X</button>
@@ -31,9 +38,9 @@
         <div id="winAttempt">
           <button type="button" class="closeWindow">X</button>
 
+          <p>If the prize is not hidden at your current location you will lose and be removed from the game.</p>
           <div class="doubleCheck" id="doubleCheck">
-            <p>If the prize is not hidden at your current location you will lose and be removed from the game.</p>
-            <div id="goingForIt">I'm sure it's here!</div>
+            Click here if you're sure!
           </div>
 
           <div id="wentForIt">
@@ -43,15 +50,74 @@
         </div>
 
         <div id="playerSelection">
-          <div class="token1 token"></div>
-          <div class="token2 token"></div>
-          <div class="token3 token"></div>
-          <div class="token4 token"></div>
-          <div class="token5 token"></div>
+          <div class="token1 token"><img src="images/token1.png" alt="token1"></div>
+          <div class="token2 token"><img src="images/token2.png" alt="token1"></div>
+          <div class="token3 token"><img src="images/token3.png" alt="token1"></div>
+          <div class="token4 token"><img src="images/token4.png" alt="token1"></div>
+          <div class="token5 token"><img src="images/token5.png" alt="token1"></div>
 
           <p id="selectionPrompt"></p>
           <button type="button" id="savePlayer">Save Player</button>
           <button type="button" id="playersAdded">Start Game</button>
+
+        </div>
+
+        <div class="rules">
+          <button type="button" class="closeRules">X</button>
+          <h2>How to Play</h2>
+
+          <h3>The Situation</h3>
+          <p>The great Cosmic Search has begun! Players must compete to find the prize that has been hidden somewhere in the galaxy first.</p>
+
+          <h3>Getting Started</h3>
+          <ul>
+            <li>Game has a minimum of 2 players, and maximum of 4 players.</li>
+            <li>Each player chooses a Character Mover which starts on a random location on the board.</li>
+            <li>Each player should keep track (maybe on paper) of the clues they discover to help them find the prize.</li>
+            <!--<li>Each player has their own Mini Map and can mark their findings on it throughout the game.</li>-->
+            <li>When the game begins, the location details of the prize will be stored away to be unlocked.</li>
+          </ul>
+
+          <h3>On Your Turn</h3>
+          <ol>
+            <li><span>Roll the dice</span></li>
+            <li><span>Check your ticket cards:</span> If your roll showed any Ticket Cards they'll be added to your collection.</li>
+            <li><span>Move your character up to the number</span> of locations rolled. Any two locations connected by a dashed line are one move apart. You may move in any direction. You do not need to move if you don't want to. More than one player may share a location.</li>
+            <li>Now, you may do <span>ONE</span> of the following:
+              <ul>
+                <li>Play one Ticket Card! (see PLAYING TICKET CARDS)</li>
+                <li>Try to find the prize to win the game! (see FINDING THE PRIZE)</li>
+                <li>End your turn. Play then passes to the next player.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h3>Playing Ticket Cards</h3>
+
+          <p>To play a Ticket Card to get a clue, follow these steps:</p>
+          <ol>
+            <li>Your character must be on a location that matches the COLOR or LOCATION symbol noted on the Ticket Card you want to play.
+              <div>
+                <p>The colors are <span>RED, BLUE, GREEN, YELLOW,</span> and <span>PURPLE.</span></p>
+                <!-- Insert images of colors? -->
+                <p>The locations are <span>COMET, PLANET, MOON, NEBULA,</span> and <span>CONSTELLATION.</span></p>
+                <!-- Insert images of locaiton types -->
+            </li>
+            <li>Select the Ticket Card you want to play and click 'Check clues.'</li>
+            <li>Now your clue will appear. <span>Make sure that nobody else is peeking<span> before viewing it.
+              <ul>
+                <li>If you see <span>NO</span> the prize <span>IS NOT HIDDEN</span> anywhere with that color or location.</li>
+                <li>If you see <span>YES</span> the prize <span>IS HIDDEN</span> somewhere with that color or location!</li>
+              </ul>
+            </li>
+            <li>Take note (maybe literally) of what you've learned.</li>
+          </ol>
+
+          <h3>Finding the Prize to Win the Game!</h3>
+          <p>If you think you know where the prize is hidden, you may try to find the prize to win!</p>
+          <p>On your turn, you must move to that location and click on 'Claim the Prize.' Then you will see what you have found.</p>
+          <p>If the prize <span>IS NOT HIDDEN</span> there, you are out of the game.<br />
+          If the prize <span>IS HIDDEN</span> there, you solved the mystery, and <span>WIN THE GAME!</span></p>
 
         </div>
 
@@ -82,73 +148,10 @@
         <div class="loc24 locations"></div>
 
       </div>
-      <div class="rules">
-        <h2>How to Play</h2>
-
-        <h3>The Situation</h3>
-        <p>The great Cosmic Search has begun! Players must compete to find the prize that has been hidden somewhere in the galaxy first.</p>
-
-        <h3>Getting Started</h3>
-        <ul>
-          <li>Game has a minimum of 2 players, and maximum of 4 players.</li>
-          <li>Each player chooses a Character Mover which starts on a random location on the board.</li>
-          <li>Each player should keep track (maybe on paper) of the clues they discover to help them find the prize.</li>
-          <!--<li>Each player has their own Mini Map and can mark their findings on it throughout the game.</li>-->
-          <li>When the game begins, the location details of the prize will be stored away to be unlocked.</li>
-        </ul>
-
-        <h3>On Your Turn</h3>
-        <ol>
-          <li><span>Roll the dice</span></li>
-          <li><span>Check your ticket cards:</span> If your roll showed any Ticket Cards they'll be added to your collection.</li>
-          <li><span>Move your character up to the number</span> of locations rolled. Any two locations connected by a dashed line are one move apart. You may move in any direction. You do not need to move if you don't want to. More than one player may share a location.</li>
-          <li>Now, you may do <span>ONE</span> of the following:
-            <ul>
-              <li>Play one Ticket Card! (see PLAYING TICKET CARDS)</li>
-              <li>Try to find the prize to win the game! (see FINDING THE PRIZE)</li>
-              <li>End your turn. Play then passes to the next player.</li>
-            </ul>
-          </li>
-        </ol>
-
-        <h3>Playing Ticket Cards</h3>
-        <p>To play a Ticket Card to get a clue, follow these steps:</p>
-        <ol>
-          <li>Your character must be on a location that matches the COLOR or LOCATION symbol noted on the Ticket Card you want to play.
-            <div>
-              <p>The colors are <span>RED, BLUE, GREEN, YELLOW,</span> and <span>PURPLE.</span></p>
-              <!-- Insert images of colors? -->
-              <p>The locations are <span>COMET, PLANET, MOON, NEBULA,</span> and <span>CONSTELLATION.</span></p>
-              <!-- Insert images of locaiton types -->
-          </li>
-          <li>Select the Ticket Card you want to play and click 'Check clues.'</li>
-          <li>Now your clue will appear. <span>Make sure that nobody else is peeking<span> before viewing it.
-            <ul>
-              <li>If you see <span>NO</span> the prize <span>IS NOT HIDDEN</span> anywhere with that color or location.</li>
-              <li>If you see <span>YES</span> the prize <span>IS HIDDEN</span> somewhere with that color or location!</li>
-            </ul>
-          </li>
-          <li>Take note (maybe literally) of what you've learned.</li>
-        </ol>
-
-        <h3>Finding the Prize to Win the Game!</h3>
-        <p>If you think you know where the prize is hidden, you may try to find the prize to win!</p>
-        <p>On your turn, you must move to that location and click on 'Claim the Prize.' Then you will see what you have found.</p>
-        <p>If the prize <span>IS NOT HIDDEN</span> there, you are out of the game.<br />
-        If the prize <span>IS HIDDEN</span> there, you solved the mystery, and <span>WIN THE GAME!</span></p>
-
-      </div>
     </main>
 
-    <div id="information">
-      <h3 id="curPlay"></h3>
-      <h3 id="roll"></h3>
-      <h3 id="moves"></h3>
-    </div>
-    <div id="helperButtons">
-      <button type="button" name="button">Rules</button>
-      <button type="button" name="button">Restart Game</button>
-    </div>
+
+
     <footer></footer>
   <script src="script.js" charset="utf-8"></script>
   </body>
