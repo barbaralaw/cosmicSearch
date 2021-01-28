@@ -234,13 +234,13 @@ main {
 }
 
 #endTurn {
-  grid-column: 10/16;
-  grid-row: 3/5;
+  grid-column: 5/12;
+  grid-row: 8/11;
 }
 
 #claimPrize {
-  grid-column: 5/12;
-  grid-row: 8/11;
+  grid-column: 10/16;
+  grid-row: 3/5;
 }
 
 .locations {
@@ -371,4 +371,8 @@ footer {
 footer div {
   padding: 2rem;
   float: right;
+}
+
+#endTurn {
+  display: none;
 }

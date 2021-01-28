@@ -85,7 +85,7 @@ const allLocations = [
   [[3,8,13],["green", "comet"]],
   [[4,7,14],["blue", "constellation"]],
   [[5, 10],["red", "nebula"]],
-  [[9, 11, 15],["purple", "constellation"]],
+  [[9, 11, 15, 17],["purple", "constellation"]],
   [[10, 12],["red", "comet"]],
   [[6, 11, 13],["green", "nebula"]],
   [[7, 12, 18],["purple", "planet"]],
@@ -93,12 +93,12 @@ const allLocations = [
   [[10, 16],["yellow", "planet"]],
   [[15, 17],["blue", "comet"]],
   [[10, 16, 18, 21],["green", "moon"]],
-  [[13, 17, 23],["red", "constellation"]],
+  [[13, 17],["red", "constellation"]],
   [[20, 23],["green", "planet"]],
   [[14, 19],["purple", "comet"]],
   [[17, 22],["yellow", "constellation"]],
   [[21, 24],["red", "planet"]],
-  [[18, 19, 24],["blue", "nebula"]],
+  [[19, 24],["blue", "nebula"]],
   [[22, 23],["purple", "moon"]]
 ];
 
@@ -405,6 +405,7 @@ function playersAdded() {
       document.querySelector(`.loc${allPlayers[i].location}`).appendChild(mapToken);*/
     }
     currentPlayer = allPlayers[0];
+    document.getElementById("alien").src = `${currentPlayer.token}`;
     curPlay.innerText = `It is player ${currentPlayer.playerNum}'s turn`;
   }
 }
@@ -420,13 +421,14 @@ function playersAdded() {
 ###########################################*/
 
 function rollDice() {
+  document.getElementById("endTurn").style.display = "block";
   return diceValues[getRandomIndex(0, diceValues.length)];
 }
 
 function beginTurn() {
   let diceRollResult = rollDice();
   hasRolled = true;
-  roll.innerText = `Rolled ${diceRollResult[0]} moves & ${diceRollResult[1]} tickets.}`;
+  roll.innerText = `Rolled ${diceRollResult[0]} moves & ${diceRollResult[1]} tickets.`;
   movesLeft = diceRollResult[0];
   document.getElementById("moves").innerText = `${movesLeft} moves left`
   for (let i=0; i<diceRollResult[1]; i++) {
@@ -469,6 +471,8 @@ function changeCurrentPlayer() {
   } else {
     currentPlayer = allPlayers[0];
   }
+  document.getElementById("alien").src = `${currentPlayer.token}`;
+  curPlay.innerText = `It is player ${currentPlayer.playerNum}'s turn`;
   return currentPlayer.playerNum;
 }
 
@@ -481,6 +485,7 @@ function clickTicket(i) {
       alert(`NO the prize isn't at a ${currentPlayer.tickets[i][1]} location`);
     }
     currentPlayer.tickets.splice(i, 1);
+    document.getElementById("endTurn").style.display = "none";
     document.getElementById("ticketView").style.display = "none";
     endTurn()
   } else {
@@ -510,6 +515,7 @@ function useTicket() {
 
 function endTurn() {
   changeCurrentPlayer()
+  document.getElementById("endTurn").style.display = "none";
   rollDiceButton.style.display = "block";
 }
 
