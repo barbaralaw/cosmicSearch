@@ -6,7 +6,7 @@ I've created this game solo as part of a weeklong hackathon hosted by mintbean.i
 
 It was purposely built using only basic HTML, CSS, and JavaScript as a learning and practice experience for me with those languages. 
 
-Cosmic Search's mechanics and board layout are borrowed from our family's favorite (and unfortunately discontinued )board game, "Scooby Doo! Fright at the Fun Park" by Buffalo Games & Puzzles. I make no claim of ownership to the mechanics or board layout, and I thank whoever the original game designer was for this fantastic game! 
+Cosmic Search's mechanics and board layout are borrowed from our family's favorite (and unfortunately discontinued )board game, "Scooby Doo! Fright at the Fun Park" by Buffalo Games & Puzzles. I make no claim of ownership to the mechanics or board layout, and I thank whoever the original game designer was for this fantastic game! The graphics used were all created by me, with the exception of the gorgeous galaxy background photo by Miriam Espacio via Pexels.
 
 The game is a work in progress, and I have a list of features I would like to add in time:
 
